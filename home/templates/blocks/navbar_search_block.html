@@ -1,0 +1,33 @@
+{% load static %}
+
+<div class="navbar__search-wrapper {% if self.enable_toggle %}navbar__search--toggleable{% endif %}"
+     data-search-endpoint="{{ self.search_endpoint_url|default:'/search/' }}"
+     data-enable-auto-suggest="{{ self.enable_auto_suggest|yesno:'true,false' }}"
+     data-auto-suggest-endpoint="{{ self.auto_suggest_endpoint|default:'' }}"
+     style="
+       {% if self.input_width %}--search-width: {{ self.input_width }};{% endif %}
+       {% if self.input_height %}--search-height: {{ self.input_height }};{% endif %}
+       {% if self.border_radius %}--search-border-radius: {{ self.border_radius }};{% endif %}
+       {% if self.border_width %}--search-border-width: {{ self.border_width }};{% endif %}
+       {% if self.border_color %}--search-border-color: {{ self.border_color }};{% endif %}
+       {% if self.focus_border_color %}--search-focus-border-color: {{ self.focus_border_color }};{% endif %}
+       {% if self.background_color %}--search-bg-color: {{ self.background_color }};{% endif %}
+       {% if self.text_color %}--search-text-color: {{ self.text_color }};{% endif %}
+       {% if self.icon_color %}--search-icon-color: {{ self.icon_color }};{% endif %}
+     ">
+  <div class="navbar__search-container">
+    <input type="text" 
+           class="navbar__search-input" 
+           placeholder="{{ self.placeholder_text|default:'Search...' }}"
+           aria-label="{{ self.placeholder_text|default:'Search' }}">
+    <button class="navbar__search-button" aria-label="Search">
+      <i class="fa-solid fa-search"></i>
+    </button>
+  </div>
+  
+  {% if self.enable_auto_suggest %}
+  <div class="navbar__search-suggestions" role="listbox" aria-label="Search suggestions">
+    <!-- Auto-suggest results will be populated here by JavaScript -->
+  </div>
+  {% endif %}
+</div>

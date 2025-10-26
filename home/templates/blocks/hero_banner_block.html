@@ -1,0 +1,152 @@
+{% load wagtailimages_tags static wagtailcore_tags %}
+
+<section
+  id="{{ self.custom_id|default:'hero-banner' }}"
+  class="hero-banner {{ self.css_class|default:'' }} {% if self.full_height %}full-height{% endif %} theme-{{ self.theme }}"
+  style="
+    {% if self.width %}width: {{ self.width }};{% endif %}
+    {% if self.height %}height: {{ self.height }};{% endif %}
+    {% if self.min_height %}min-height: {{ self.min_height }};{% endif %}
+    {% if self.max_height %}max-height: {{ self.max_height }};{% endif %}
+    display: flex;
+    flex-direction: column;
+    justify-content: {% if self.vertical_alignment == 'top' %}flex-start{% elif self.vertical_alignment == 'bottom' %}flex-end{% else %}center{% endif %};
+    align-items: {% if self.horizontal_alignment == 'left' %}flex-start{% elif self.horizontal_alignment == 'right' %}flex-end{% else %}center{% endif %};
+    text-align: {{ self.horizontal_alignment }};
+    {% if self.content_max_width %}max-width: {{ self.content_max_width }};{% endif %}
+    {% if self.content_padding %}padding: {{ self.content_padding }};{% endif %}
+    {% if self.font_family %}font-family: {{ self.font_family }};{% endif %}
+    {% if self.border_radius %}border-radius: {{ self.border_radius }};{% endif %}
+    {% if self.border_width and self.border_style != 'none' %}border-width: {{ self.border_width }};{% endif %}
+    {% if self.border_style %}border-style: {{ self.border_style }};{% endif %}
+    {% if self.border_color %}border-color: {{ self.border_color }};{% endif %}
+    {% if self.margin %}margin: {{ self.margin }};{% endif %}
+    {% if self.background_type == 'color' %}
+      background-color: {{ self.background_color }};
+    {% elif self.background_type == 'gradient' %}
+      background: linear-gradient({{ self.gradient_direction }}, {{ self.gradient_start }}, {{ self.gradient_end }});
+    {% elif self.background_type == 'image' and self.background_image %}
+      {% image self.background_image original as bg %}
+      background-image: url('{{ bg.url }}');
+      background-size: cover;
+      background-position: center;
+      {% if self.parallax %}background-attachment: fixed;{% endif %}
+    {% elif self.background_type == 'image' and self.background_image_url %}
+      background-image: url('{{ self.background_image_url }}');
+      background-size: cover;
+      background-position: center;
+      {% if self.parallax %}background-attachment: fixed;{% endif %}
+    {% elif self.background_type == 'kenburns' and self.background_image %}
+      {% image self.background_image original as bg %}
+      background-image: url('{{ bg.url }}');
+      background-size: cover;
+      background-position: center;
+      animation: kenburns 20s ease-in-out infinite alternate;
+    {% elif self.background_type == 'kenburns' and self.background_image_url %}
+      background-image: url('{{ self.background_image_url }}');
+      background-size: cover;
+      background-position: center;
+      animation: kenburns 20s ease-in-out infinite alternate;
+    {% endif %}
+    {% if self.aspect_ratio %}aspect-ratio: {{ self.aspect_ratio }};{% endif %}
+  "
+>
+  {% if self.background_type == 'video' and self.background_video_url %}
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="{{ self.background_video_url }}" type="video/mp4" />
+  </video>
+  {% endif %}
+
+  {% if self.overlay_enabled %}
+  <div
+    class="hero-overlay"
+    style="
+      background-color: {{ self.overlay_color|default:'rgba(0,0,0,0.3)' }};
+      opacity: {{ self.overlay_opacity }};
+      {% if self.overlay_blur %}backdrop-filter: blur({{ self.overlay_blur }}px);{% endif %}
+    "
+  ></div>
+  {% endif %}
+
+  <div class="hero-content" 
+       style="
+         {% if self.content_max_width %}max-width: {{ self.content_max_width }};{% endif %}
+         gap: {{ self.button_spacing|default:'1rem' }};
+       ">
+    {% if self.tagline %}
+    <p class="hero-tagline"
+       style="font-size: {{ self.tagline_font_size }};
+              color: {{ self.tagline_color|default:'#D4AF37' }};
+              {% if self.letter_spacing %}letter-spacing: {{ self.letter_spacing }};{% endif %}
+              {% if self.text_shadow %}text-shadow: 0 3px 8px rgba(0,0,0,0.5);{% endif %}"
+       data-animate="{{ self.text_animation }}"
+       data-duration="{{ self.animation_duration }}"
+       data-delay="{{ self.animation_delay }}">
+       {{ self.tagline }}
+    </p>
+    {% endif %}
+
+    {% if self.title %}
+    <h1 class="hero-title"
+        style="font-size: {{ self.title_font_size|default:'clamp(2rem,5vw,4rem)' }};
+               font-weight: {{ self.font_weight }};
+               color: {{ self.title_color|default:'#ffffff' }};
+               {% if self.letter_spacing %}letter-spacing: {{ self.letter_spacing }};{% endif %}"
+        data-animate="{{ self.text_animation }}"
+        data-duration="{{ self.animation_duration }}"
+        data-delay="{{ self.animation_delay }}">
+        {{ self.title }}
+    </h1>
+    {% endif %}
+
+    {% if self.subtitle %}
+    <h3 class="hero-subtitle"
+        style="font-size: {{ self.subtitle_font_size|default:'1.3rem' }};
+               color: {{ self.subtitle_color|default:'#f2f2f2' }};
+               {% if self.letter_spacing %}letter-spacing: {{ self.letter_spacing }};{% endif %}">
+        {{ self.subtitle }}
+    </h3>
+    {% endif %}
+
+    {% if self.ctas %}
+    <div class="hero-buttons"
+         style="justify-content: {% if self.button_alignment == 'left' %}flex-start{% elif self.button_alignment == 'right' %}flex-end{% else %}center{% endif %};
+                gap: {{ self.button_spacing|default:'1rem' }};">
+      {% for btn in self.ctas %}
+      {% include_block btn %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div id="hero-ajax-content" class="ajax-section">
+      <button id="loadQuote" class="btn btn-outline hover-shadow">Load University Quote</button>
+      <p id="quoteText" class="ajax-quote"></p>
+    </div>
+  </div>
+
+  {% if self.scroll_indicator %}
+  <div class="scroll-indicator" 
+       {% if self.scroll_down_target %}data-target="{{ self.scroll_down_target }}"{% endif %}></div>
+  {% endif %}
+</section>
+
+{% if self.custom_css %}
+<style>
+  {{ self.custom_css|safe }}
+</style>
+{% endif %}
+
+<script src="{% static 'js/hero_banner.js' %}"></script>
+
+{% if self.custom_js %}
+<script>
+  {{ self.custom_js|safe }}
+</script>
+{% endif %}
+
+<style>
+@keyframes kenburns {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.2) translate(-2%, -2%); }
+}
+</style>

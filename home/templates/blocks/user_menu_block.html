@@ -1,0 +1,113 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+<div class="navbar__user-menu"
+     data-dropdown-width="{{ self.dropdown_width|default:'200px' }}"
+     data-dropdown-background="{{ self.dropdown_background|default:'#FFFFFF' }}"
+     data-dropdown-text-color="{{ self.dropdown_text_color|default:'#333333' }}"
+     data-dropdown-hover-background="{{ self.dropdown_hover_background|default:'#F5F5F5' }}"
+     data-dropdown-border-radius="{{ self.dropdown_border_radius|default:'8px' }}"
+     data-dropdown-shadow="{{ self.dropdown_shadow|default:'0 4px 6px rgba(0,0,0,0.1)' }}"
+     style="
+       --dropdown-width: {{ self.dropdown_width|default:'200px' }};
+       --dropdown-background: {{ self.dropdown_background|default:'#FFFFFF' }};
+       --dropdown-text-color: {{ self.dropdown_text_color|default:'#333333' }};
+       --dropdown-hover-background: {{ self.dropdown_hover_background|default:'#F5F5F5' }};
+       --dropdown-border-radius: {{ self.dropdown_border_radius|default:'8px' }};
+       --dropdown-shadow: {{ self.dropdown_shadow|default:'0 4px 6px rgba(0,0,0,0.1)' }};
+     ">
+  {% if user.is_authenticated %}
+    <!-- Logged-in user menu -->
+    <div class="navbar__user-trigger" 
+         role="button" 
+         tabindex="0" 
+         aria-haspopup="true" 
+         aria-expanded="false"
+         aria-label="User menu">
+      {% if self.show_avatar %}
+        {% if user.avatar %}
+          {% image user.avatar fill-40x40 as avatar_img %}
+          <img src="{{ avatar_img.url }}" 
+               alt="{{ user.get_full_name|default:user.username }}" 
+               class="navbar__user-avatar"
+               style="
+                 width: {{ self.avatar_size|default:'40px' }};
+                 height: {{ self.avatar_size|default:'40px' }};
+                 border-radius: {{ self.avatar_border_radius|default:'50%' }};
+               ">
+        {% else %}
+          {% if self.avatar_fallback == "initials" %}
+            <div class="navbar__user-initials"
+                 style="
+                   width: {{ self.avatar_size|default:'40px' }};
+                   height: {{ self.avatar_size|default:'40px' }};
+                   border-radius: {{ self.avatar_border_radius|default:'50%' }};
+                 ">
+              {{ user.first_name|first|default:user.username|first|upper }}
+            </div>
+          {% elif self.avatar_fallback == "icon" %}
+            <div class="navbar__user-icon"
+                 style="
+                   width: {{ self.avatar_size|default:'40px' }};
+                   height: {{ self.avatar_size|default:'40px' }};
+                   border-radius: {{ self.avatar_border_radius|default:'50%' }};
+                 ">
+              <i class="fa-solid fa-user"></i>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% else %}
+        <span class="navbar__user-name">{{ user.get_full_name|default:user.username }}</span>
+      {% endif %}
+    </div>
+    
+    <!-- Dropdown menu -->
+    <div class="navbar__user-dropdown" role="menu">
+      <div class="navbar__user-dropdown-header">
+        <div class="navbar__user-info">
+          <strong>{{ user.get_full_name|default:user.username }}</strong>
+          <small>{{ user.email }}</small>
+        </div>
+      </div>
+      
+      <div class="navbar__user-dropdown-divider"></div>
+      
+      <a href="{{ self.profile_link|default:'/accounts/profile/' }}" 
+         class="navbar__user-dropdown-link" 
+         role="menuitem">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile</span>
+      </a>
+      
+      <a href="{{ self.settings_link|default:'/accounts/settings/' }}" 
+         class="navbar__user-dropdown-link" 
+         role="menuitem">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+      </a>
+      
+      <div class="navbar__user-dropdown-divider"></div>
+      
+      <a href="{{ self.logout_link|default:'/accounts/logout/' }}" 
+         class="navbar__user-dropdown-link navbar__user-dropdown-link--logout" 
+         role="menuitem">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  {% else %}
+    <!-- Guest user menu -->
+    <div class="navbar__user-guest">
+      <a href="{{ self.login_link|default:'/accounts/login/' }}" 
+         class="navbar__user-login-link">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        <span>Login</span>
+      </a>
+      
+      <a href="{{ self.register_link|default:'/accounts/register/' }}" 
+         class="navbar__user-register-link">
+        <i class="fa-solid fa-user-plus"></i>
+        <span>Register</span>
+      </a>
+    </div>
+  {% endif %}
+</div>

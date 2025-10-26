@@ -1,0 +1,171 @@
+{% load static wagtailimages_tags wagtailcore_tags %}
+
+<nav 
+  class="navbar 
+         {% if self.sticky_navbar %}navbar--sticky{% endif %}
+         {% if self.transparent_on_load %}navbar--transparent{% endif %}
+         {% if self.nav_shadow %}navbar--shadow{% endif %}
+         theme-{{ self.theme }}"
+  data-bg-color="{{ self.background_color }}"
+  data-text-color="{{ self.text_color }}"
+  data-hover-color="{{ self.hover_color }}"
+  style="
+    {% if self.width %}width: {{ self.width }};{% endif %}
+    {% if self.height %}height: {{ self.height }};{% endif %}
+    {% if self.max_width %}--navbar-max-width: {{ self.max_width }};{% endif %}
+    {% if self.gradient_background %}background: linear-gradient(to right, {{ self.gradient_start }}, {{ self.gradient_end }});{% endif %}
+    {% if self.backdrop_blur %}backdrop-filter: blur({{ self.blur_strength }}px);{% endif %}
+    padding: {{ self.padding_y }} {{ self.padding_x }};
+    font-size: {{ self.font_size }};
+    letter-spacing: {{ self.letter_spacing }};
+    {% if self.border_radius %}border-radius: {{ self.border_radius }};{% endif %}
+    {% if self.border_width and self.border_style != 'none' %}border-width: {{ self.border_width }};{% endif %}
+    {% if self.border_style %}border-style: {{ self.border_style }};{% endif %}
+    {% if self.border_color %}border-color: {{ self.border_color }};{% endif %}
+    {% if self.margin %}margin: {{ self.margin }};{% endif %}
+  "
+>
+  <div class="navbar__container">
+
+    <!-- Brand Section -->
+    <div class="navbar__brand" style="justify-content: {{ self.logo_alignment }};">
+      {% if self.logo_image %}
+        {% image self.logo_image original as logo %}
+        <a href="/" class="navbar__logo-link">
+          <img src="{{ logo.url }}" alt="{{ self.university_name }}" class="navbar__logo" style="height: {{ self.logo_size }};">
+        </a>
+      {% endif %}
+      <div class="navbar__brand-text">
+        <span class="navbar__title">{{ self.university_name }}</span>
+        {% if self.tagline %}
+        <span class="navbar__tagline">{{ self.tagline }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="navbar__menu" id="navbar-menu">
+      {% for item in self.menu_items %}
+      <div class="navbar__item {% if item.is_button %}navbar__item--button{% endif %}" 
+           style="
+             {% if item.width %}width: {{ item.width }};{% endif %}
+             {% if item.height %}height: {{ item.height }};{% endif %}
+             {% if item.padding %}padding: {{ item.padding }};{% endif %}
+             {% if item.margin %}margin: {{ item.margin }};{% endif %}
+             {% if item.font_size %}font-size: {{ item.font_size }};{% endif %}
+             {% if item.font_weight %}font-weight: {{ item.font_weight }};{% endif %}
+           ">
+        <a href="{{ item.link|default:'#' }}" 
+           class="navbar__link {% if item.is_button %}btn btn-{{ item.button_style }}{% endif %} hover-{{ item.hover_effect }} {% if item.is_mega_menu %}navbar__link--mega{% endif %}"
+           {% if item.is_mega_menu %}data-mega-menu="true"{% endif %}>
+          {% if item.icon_class %}<i class="{{ item.icon_class }}"></i>{% endif %}
+          {{ item.label }}
+        </a>
+
+        <!-- Regular Dropdown -->
+        {% if item.dropdown_items and not item.is_mega_menu %}
+        <div class="navbar__dropdown">
+          {% for sub in item.dropdown_items %}
+          <a href="{{ sub.link }}" class="navbar__dropdown-link">
+            {% if sub.icon_class %}<i class="{{ sub.icon_class }}"></i>{% endif %}
+            <span>{{ sub.label }}</span>
+            {% if sub.description %}<span class="navbar__dropdown-description">{{ sub.description }}</span>{% endif %}
+          </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Mega Menu -->
+        {% if item.is_mega_menu and item.mega_menu_columns %}
+        <div class="navbar__mega-menu">
+          <div class="navbar__mega-container">
+            {% for column in item.mega_menu_columns %}
+            <div class="navbar__mega-column">
+              {% if column.column_title %}
+              <h3 class="navbar__mega-column-title">
+                {% if column.icon_class %}<i class="{{ column.icon_class }}"></i>{% endif %}
+                {{ column.column_title }}
+              </h3>
+              {% endif %}
+              <ul class="navbar__mega-links">
+                {% for link in column.links %}
+                <li>
+                  <a href="{{ link.url }}" class="navbar__mega-link">
+                    {% if link.icon_class %}<i class="{{ link.icon_class }}"></i>{% endif %}
+                    {{ link.label }}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+      
+      <!-- Search -->
+      {% if self.enable_search %}
+        {% if self.search_settings %}
+          {% include_block self.search_settings %}
+        {% else %}
+          <div class="navbar__search">
+            <input type="text" class="navbar__search-input" placeholder="Search...">
+            <button class="navbar__search-button"><i class="fa-solid fa-search"></i></button>
+          </div>
+        {% endif %}
+      {% endif %}
+      
+      <!-- User Menu -->
+      {% if self.enable_user_menu %}
+        {% if self.user_menu_settings %}
+          {% include_block self.user_menu_settings %}
+        {% else %}
+          <div class="navbar__user-menu">
+            <!-- Default user menu implementation would go here -->
+          </div>
+        {% endif %}
+      {% endif %}
+      
+      <!-- Language Switcher -->
+      {% if self.enable_language_switcher %}
+        {% if self.language_switcher_settings %}
+          {% include_block self.language_switcher_settings %}
+        {% else %}
+          <div class="navbar__language">
+            <select class="navbar__language-select">
+              <option>EN</option>
+              <option>ES</option>
+              <option>FR</option>
+            </select>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      <!-- Mobile Toggle -->
+      <button id="navbar-toggle" class="navbar__toggle" aria-label="Toggle navigation menu">
+        <span class="navbar__bar"></span>
+        <span class="navbar__bar"></span>
+        <span class="navbar__bar"></span>
+      </button>
+
+    </div>
+  </div>
+</nav>
+
+{% if self.custom_css %}
+<style>
+  {{ self.custom_css|safe }}
+</style>
+{% endif %}
+
+<link rel="stylesheet" href="{% static 'css/navbar_block.css' %}">
+
+<script src="{% static 'js/navbar_block.js' %}"></script>
+
+{% if self.custom_js %}
+<script>
+  {{ self.custom_js|safe }}
+</script>
+{% endif %}

@@ -1,0 +1,54 @@
+{% load i18n static wagtailcore_tags %}
+
+<div class="navbar__language-switcher"
+     data-dropdown-width="{{ self.dropdown_width|default:'150px' }}"
+     data-dropdown-background="{{ self.dropdown_background|default:'#FFFFFF' }}"
+     data-dropdown-text-color="{{ self.dropdown_text_color|default:'#333333' }}"
+     data-dropdown-hover-background="{{ self.dropdown_hover_background|default:'#F5F5F5' }}"
+     data-dropdown-border-radius="{{ self.dropdown_border_radius|default:'8px' }}"
+     data-dropdown-shadow="{{ self.dropdown_shadow|default:'0 4px 6px rgba(0,0,0,0.1)' }}"
+     data-animation-duration="{{ self.animation_duration|default:'0.3s' }}"
+     data-animation-easing="{{ self.animation_easing|default:'ease-in-out' }}"
+     style="
+       --dropdown-width: {{ self.dropdown_width|default:'150px' }};
+       --dropdown-background: {{ self.dropdown_background|default:'#FFFFFF' }};
+       --dropdown-text-color: {{ self.dropdown_text_color|default:'#333333' }};
+       --dropdown-hover-background: {{ self.dropdown_hover_background|default:'#F5F5F5' }};
+       --dropdown-border-radius: {{ self.dropdown_border_radius|default:'8px' }};
+       --dropdown-shadow: {{ self.dropdown_shadow|default:'0 4px 6px rgba(0,0,0,0.1)' }};
+       --animation-duration: {{ self.animation_duration|default:'0.3s' }};
+       --animation-easing: {{ self.animation_easing|default:'ease-in-out' }};
+     ">
+  {% if self.available_languages %}
+    <div class="navbar__language-trigger" 
+         role="button" 
+         tabindex="0" 
+         aria-haspopup="true" 
+         aria-expanded="false"
+         aria-label="{% trans 'Language selector' %}">
+      {% for language in self.available_languages %}
+        {% if language.code == context.current_language|default:self.default_language|default:'en' %}
+          {% if language.flag_icon %}
+            <span class="navbar__language-flag {{ language.flag_icon }}"></span>
+          {% endif %}
+          <span class="navbar__language-label">{{ language.label }}</span>
+          <i class="navbar__language-arrow fa-solid fa-chevron-down"></i>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    <div class="navbar__language-dropdown" role="menu">
+      {% for language in self.available_languages %}
+        <a href="{% url 'set_language' %}?language={{ language.code }}" 
+           class="navbar__language-option {% if language.code == context.current_language|default:self.default_language|default:'en' %}navbar__language-option--active{% endif %}"
+           role="menuitem"
+           data-language-code="{{ language.code }}">
+          {% if language.flag_icon %}
+            <span class="navbar__language-flag {{ language.flag_icon }}"></span>
+          {% endif %}
+          <span class="navbar__language-text">{{ language.label }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

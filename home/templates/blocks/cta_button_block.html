@@ -1,0 +1,33 @@
+{% load static %}
+
+<a href="{{ self.url }}"
+   class="btn btn-{{ self.style }} hover-{{ self.hover_effect }} {% if self.is_button %}btn-full{% endif %}"
+   {% if self.open_in_new_tab %}target="_blank"{% endif %}
+   {% if self.gradient_start and self.gradient_end and self.style == 'gradient' %}
+   style="background: linear-gradient({{ self.gradient_angle|default:'45deg' }}, {{ self.gradient_start }}, {{ self.gradient_end }});"
+   {% endif %}
+   {% if self.glow_color and self.style == 'glass' %}
+   style="box-shadow: 0 0 15px {{ self.glow_color }};"
+   {% endif %}
+   style="
+     {% if self.width %}width: {{ self.width }};{% endif %}
+     {% if self.height %}height: {{ self.height }};{% endif %}
+     {% if self.min_width %}min-width: {{ self.min_width }};{% endif %}
+     {% if self.min_height %}min-height: {{ self.min_height }};{% endif %}
+     {% if self.max_width %}max-width: {{ self.max_width }};{% endif %}
+     {% if self.max_height %}max-height: {{ self.max_height }};{% endif %}
+     {% if self.border_radius %}border-radius: {{ self.border_radius }};{% endif %}
+     {% if self.border_width and self.border_style != 'none' %}border-width: {{ self.border_width }};{% endif %}
+     {% if self.border_style %}border-style: {{ self.border_style }};{% endif %}
+     {% if self.border_color %}border-color: {{ self.border_color }};{% endif %}
+     {% if self.padding %}padding: {{ self.padding }};{% endif %}
+     {% if self.margin %}margin: {{ self.margin }};{% endif %}
+     {% if self.font_size %}font-size: {{ self.font_size }};{% endif %}
+     {% if self.font_weight %}font-weight: {{ self.font_weight }};{% endif %}
+     {% if self.text_transform %}text-transform: {{ self.text_transform }};{% endif %}
+     {% if self.letter_spacing %}letter-spacing: {{ self.letter_spacing }};{% endif %}
+     {{ self.custom_css|default:'' }}
+   ">
+   {% if self.icon %}<i class="{{ self.icon }}"></i>{% endif %}
+   {{ self.label }}
+</a>

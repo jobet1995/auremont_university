@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
@@ -12,6 +12,26 @@ Delete the line below if you're just getting started and want to remove the welc
 {% endblock extra_css %}
 
 {% block content %}
+
+{% if page.navbar %}
+    {% for block in page.navbar %}
+        {% include_block block %}
+    {% endfor %}
+{% endif %}
+
+{% if page.hero_section %}
+    {% for block in page.hero_section.content %}
+        {% include_block block %}
+    {% endfor %}
+{% endif %}
+
+{% if page.body %}
+    <div class="homepage-content">
+        {% for block in page.body %}
+            {% include_block block %}
+        {% endfor %}
+    </div>
+{% endif %}
 
 {% comment %}
 Delete the line below if you're just getting started and want to remove the welcome screen!

@@ -25,6 +25,12 @@
 
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/auremont_university.css' %}">
+        
+        {# Plugin stylesheets #}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/navbar_block.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/hero_banner.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/cta_button.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/homepage.css' %}">
 
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
@@ -38,6 +44,11 @@
 
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/auremont_university.js' %}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
+        {# Plugin javascript #}
+        <script type="text/javascript" src="{% static 'js/navbar_block.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/hero_banner.js' %}"></script>
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}

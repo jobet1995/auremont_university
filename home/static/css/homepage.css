@@ -1,0 +1,52 @@
+/* Homepage specific styles */
+
+.homepage-content {
+  padding: 2rem 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.homepage-content h2 {
+  color: #001F3F;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.homepage-content p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.homepage-content figure {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.homepage-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.homepage-content figcaption {
+  font-style: italic;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .homepage-content {
+    padding: 1rem;
+  }
+  
+  .homepage-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .homepage-content p {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,152 @@
+/* =======================================
+   Auremont University CTA Button Styles
+   ======================================= */
+
+:root {
+  --btn-primary-bg: #D4AF37;
+  --btn-primary-text: #001F3F;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #D4AF37;
+  --btn-outline-border: #D4AF37;
+  --btn-outline-text: #D4AF37;
+  --btn-hover-bg: #c29a30;
+  --btn-hover-text: #001F3F;
+  --btn-transition: all 0.3s ease;
+}
+
+/* Base button styles */
+.btn {
+  padding: 0.9rem 1.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--btn-transition);
+  border: 2px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Button styles */
+.btn-primary {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+.btn-primary:hover {
+  background-color: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-secondary {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border-color: var(--btn-secondary-text);
+}
+.btn-secondary:hover {
+  background-color: var(--btn-secondary-text);
+  color: var(--btn-primary-bg);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  border: 2px solid var(--btn-outline-border);
+  color: var(--btn-outline-text);
+  background: transparent;
+}
+.btn-outline:hover {
+  background: var(--btn-outline-text);
+  color: var(--btn-primary-bg);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--btn-outline-text);
+  border: 2px solid transparent;
+}
+.btn-ghost:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--btn-outline-text);
+}
+
+.btn-gradient {
+  border: none;
+  color: white;
+  background-size: 200% auto;
+  transition: 0.5s;
+}
+.btn-gradient:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-link {
+  background: transparent;
+  border: none;
+  color: var(--btn-outline-text);
+  text-decoration: underline;
+  padding: 0.5rem 1rem;
+}
+.btn-link:hover {
+  color: var(--btn-hover-bg);
+  text-decoration: none;
+}
+
+/* Full width button */
+.btn-full {
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Hover effects */
+.hover-grow:hover { transform: scale(1.05); }
+.hover-shrink:hover { transform: scale(0.95); }
+.hover-underline:hover { text-decoration: underline; }
+.hover-shadow:hover { box-shadow: 0 0 12px rgba(212, 175, 55, 0.6); }
+.hover-pulse:hover { animation: pulse 2s infinite; }
+.hover-tilt:hover { transform: rotate(2deg); }
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .btn-full {
+    max-width: 100%;
+  }
+}
+
+/* Custom dimensions support */
+.btn[data-width] { width: attr(data-width); }
+.btn[data-height] { height: attr(data-height); }
+.btn[data-min-width] { min-width: attr(data-min-width); }
+.btn[data-min-height] { min-height: attr(data-min-height); }
+.btn[data-max-width] { max-width: attr(data-max-width); }
+.btn[data-max-height] { max-height: attr(data-max-height); }
